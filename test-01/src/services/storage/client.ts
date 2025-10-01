@@ -60,7 +60,7 @@ export async function getFile(userId: string, id: string) {
   return storageClient.getObject(env.STORAGE_BUCKET_NAME, file.id);
 }
 
-export async function updateFile(
+export async function putFile(
   userId: string,
   fileId: string,
   file: UpdateFileDTO
