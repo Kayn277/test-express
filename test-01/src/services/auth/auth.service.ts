@@ -1,5 +1,9 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 
+export function signin(req: Request, res: Response) {}
 
+export function signup(req: Request, res: Response) {}
 
-export function verify(token: string) {}
+export function newToken(req: Request, res: Response) {}
+
+export function logout(req: Request, res: Response) {}

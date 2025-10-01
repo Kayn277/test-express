@@ -10,6 +10,7 @@ const envSchema = z.object({
   STORAGE_ACCESS_KEY: z.string(),
   STORAGE_SECRET_KEY: z.string(),
   STORAGE_BUCKET_NAME: z.string(),
+  JWT_PRIVATE_KEY: z.string(),
 });
 
 export const env = envSchema.parse({
@@ -19,4 +20,5 @@ export const env = envSchema.parse({
   STORAGE_ACCESS_KEY: process.env.STORAGE_ACCESS_KEY,
   STORAGE_SECRET_KEY: process.env.STORAGE_SECRET_KEY,
   STORAGE_BUCKET_NAME: process.env.STORAGE_BUCKET_NAME,
+  JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY,
 });
