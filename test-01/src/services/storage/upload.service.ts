@@ -52,7 +52,16 @@ export async function download(req: RequestWithUser, res: Response) {
                 userId: req.user.id,
             },
         });
-        res.send(await getFile(req.user.id, file!.id));
+
+        if (!file) {
+            res.sendStatus(404);
+            return;
+        }
+
+        const fileBuffer = await getFile(req.user.id, file!.id);
+        res.setHeader('Content-Type', file.mime);
+        res.setHeader('Content-Disposition', `attachment; filename="${file.name + '.' + file.extension}"`);
+        fileBuffer.pipe(res);
     }
 
     res.sendStatus(400);
