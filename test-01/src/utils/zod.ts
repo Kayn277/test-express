@@ -6,7 +6,7 @@ export const zodPhoneNumber = (
   value: string,
   ctx: z.z.core.$RefinementCtx<string>
 ) => {
-  const phoneNumber = parsePhoneNumber(value);
+  const phoneNumber = parsePhoneNumber(value, "RU");
   if (!phoneNumber?.isValid()) {
     ctx.addIssue({
       code: "custom",

@@ -19,7 +19,7 @@ auth.post("/signin", bodyZodValidate(signupSchema), expressAsyncHandler(async (r
         userAgent: req.headers['user-agent'] ?? ""
     }
 
-    const phone = parsePhoneNumber(id);
+    const phone = parsePhoneNumber(id, "RU");
 
     let signIn: SigninData = {
         type: "Email",

@@ -13,7 +13,7 @@ async function main() {
 
   app.use(cookieParser());
   app.use(express.json());
-  app.options('*', cors())
+  app.use(cors())
 
   app.use("/api", api);
 

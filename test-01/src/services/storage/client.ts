@@ -7,7 +7,6 @@ import {
   type UpdateFileDTO,
 } from "./dto/file.dto.js";
 import { prisma } from "../database/client.js";
-import type { File } from "../../generated/prisma/index.js";
 
 const storageClient = new Minio.Client({
   endPoint: env.STORAGE_ENDPOINT,

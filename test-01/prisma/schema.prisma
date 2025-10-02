@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -16,11 +15,11 @@ datasource db {
 
 model User {
   id          String    @id @default(cuid())
-  phoneNumber String    @unique @db.VarChar(15) //E.164 compliant
+  phoneNumber String    @unique
   email       String    @unique @db.VarChar(320)
   password    String    @db.Text
-  createdAt   DateTime  @default(now()) @db.Timestamp()
-  updatedAt   DateTime  @updatedAt @db.Timestamp()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   File        File[]
   Session     Session[]
 
@@ -33,8 +32,8 @@ model File {
   extension String   @db.VarChar(255)
   mime      String   @db.VarChar(255)
   size      BigInt //Size in bytes
-  createdAt DateTime @default(now()) @db.Timestamp()
-  updatedAt DateTime @updatedAt @db.Timestamp()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -44,8 +43,8 @@ model File {
 
 model Session {
   id           String   @id @default(cuid())
-  createdAt    DateTime @default(now()) @db.Timestamp()
-  updatedAt    DateTime @updatedAt @db.Timestamp()
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   device       String
   refreshToken String
   ip           String

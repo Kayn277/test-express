@@ -1,24 +1,21 @@
-version: "3"
-
+name: test-service
 services:
-  # ------------------ MinIO ------------------
   minio:
     image: minio/minio
     container_name: minio
     ports:
-      - "9000:9000" # пробросим порт из env
-      - "9001:9001" # веб-консоль
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: "Q3AM3UQ867SPQQA43P2F"
       MINIO_ROOT_PASSWORD: "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
     command: server /data --console-address ":9001"
     volumes:
-      - minio_data:/data
+      - ./minio:/data
     restart: unless-stopped
 
-  # ------------------ MySQL ------------------
   db:
-    image: mysql:8
+    image: mysql
     container_name: mysql
     ports:
       - "3306:3306"
@@ -26,29 +23,25 @@ services:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: "test_db"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./sql:/var/lib/mysql
     restart: unless-stopped
 
-  # ------------------ Express App ------------------
   app:
     build:
       context: ./test-01
     container_name: test-01-app
     ports:
-      - "3000:3000"
+      - "3004:3000"
     environment:
       PORT: "3000"
-      DATABASE_URL: "mysql://root:root@localhost:3306/test_db"
-      STORAGE_ENDPOINT: "localhost"
+      DATABASE_URL: "mysql://root:root@db:3306/test_db"
+      STORAGE_ENDPOINT: "minio"
       STORAGE_PORT: "9000"
       STORAGE_ACCESS_KEY: "Q3AM3UQ867SPQQA43P2F"
       STORAGE_SECRET_KEY: "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
       STORAGE_BUCKET_NAME: "uploads"
+      JWT_PRIVATE_KEY: "keykeykey"
     depends_on:
       - db
       - minio
     restart: unless-stopped
-
-volumes:
-  minio_data:
-  mysql_data:

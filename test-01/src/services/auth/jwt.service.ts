@@ -3,7 +3,7 @@ import type { JwtAuthPayload } from "./dto/jwt.payload.js";
 import { env } from "../../utils/env-validation.js";
 import jwt from "jsonwebtoken";
 import { prisma } from "../database/client.js";
-import type { Session } from "../../generated/prisma/index.js";
+import type { Session } from "@prisma/client";
 
 export async function verify(token: string): Promise<Session> {
     const payload = jwt.verify(token, env.JWT_PRIVATE_KEY) as JwtAuthPayload;
