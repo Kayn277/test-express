@@ -3,7 +3,7 @@ import type { SigninData, SignupDto } from "./dto/auth.dto.js";
 import { createUser, getUserWithEmail, getUserWithPhone } from "../user/user.service.js";
 import { id } from "zod/locales";
 import { compare } from "bcrypt";
-import { removeSession } from "./jwt.service.js";
+import { createJwtPair, removeSession } from "./jwt.service.js";
 
 export async function signin(signinData: SigninData) {
     const user = signinData.type === "Phone" ? await getUserWithPhone(signinData.phoneNumber) : await getUserWithEmail(signinData.email);
@@ -11,7 +11,14 @@ export async function signin(signinData: SigninData) {
     if (user) {
         const compared = await compare(signinData.password, user.password);
         if (compared) {
-
+            return createJwtPair({
+                ip: signinData.ip,
+                userAgent: signinData.userAgent,
+                userId: user.id
+            })
+        }
+        else {
+            throw new Error("Invalid password");
         }
     }
     else {

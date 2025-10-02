@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import { withUserAuth } from "../services/auth/middleware/withUserAuth.js";
 import { bodyZodValidate } from "../utils/validate-zod.js";
-import { signupSchema, type SigninData } from "../services/auth/dto/auth.dto.js";
+import { signinSchema, signupSchema, type SigninData } from "../services/auth/dto/auth.dto.js";
 import expressAsyncHandler from "express-async-handler";
 import { logout, signin, signup } from "../services/auth/auth.service.js";
 import { parsePhoneNumber } from "libphonenumber-js/min";
@@ -10,7 +10,7 @@ import { updateJwtPair } from "../services/auth/jwt.service.js";
 
 export const auth = Router();
 
-auth.post("/signin", bodyZodValidate(signupSchema), expressAsyncHandler(async (req: Request, res: Response) => {
+auth.post("/signin", bodyZodValidate(signinSchema), expressAsyncHandler(async (req: Request, res: Response) => {
     const { id, password } = req.body;
 
     const baseData = {
@@ -37,9 +37,13 @@ auth.post("/signin", bodyZodValidate(signupSchema), expressAsyncHandler(async (r
         }
     }
 
-    const responseData = await signin(signIn);
+    const { accessToken, refreshToken } = await signin(signIn);
 
-    res.status(200).json(responseData);
+    res
+        .status(200)
+        .cookie("refreshToken", refreshToken, {
+            httpOnly: true
+        }).json(accessToken);
 }));
 
 auth.post("/signin/new_token", expressAsyncHandler(async (req: Request, res: Response) => {
