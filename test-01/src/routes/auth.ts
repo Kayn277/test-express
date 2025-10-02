@@ -4,7 +4,6 @@ import { bodyZodValidate } from "../utils/validate-zod.js";
 import { signupSchema, type SigninData } from "../services/auth/dto/auth.dto.js";
 import expressAsyncHandler from "express-async-handler";
 import { logout, signin, signup } from "../services/auth/auth.service.js";
-import { PhoneNumber } from "libphonenumber-js";
 import { parsePhoneNumber } from "libphonenumber-js/min";
 import type { RequestWithUser } from "../utils/request-with-user.js";
 import { updateJwtPair } from "../services/auth/jwt.service.js";
