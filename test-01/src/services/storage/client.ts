@@ -17,10 +17,10 @@ const storageClient = new Minio.Client({
   useSSL: process.env.NODE_ENV === "production",
 });
 
-export async function uploadFile(userId: string, file: FileDTO) {
+export async function createFile(userId: string, file: FileDTO) {
   return await prisma.$transaction(async (tx) => {
     fileSchema.parse(file);
-    const [fileName, fileExtension] = file.originalName.split(".");
+    const [fileName, fileExtension] = file.originalname.split(".");
     if (!fileName) {
       throw new Error("Invalid file name");
     }
@@ -79,7 +79,7 @@ export async function putFile(
       throw new Error("File not found");
     }
 
-    const [fileName, fileExtension] = file.originalName!.split(".");
+    const [fileName, fileExtension] = file.originalname!.split(".");
 
     const updated = await tx.file.update({
       where: {

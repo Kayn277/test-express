@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { uploadFile } from "../services/storage/upload.service.js";
+import { deleteFile, download, listFiles, showFileInfo, updateFile, uploadFile } from "../services/storage/upload.service.js";
 import multer from "multer";
 import { withUserAuth } from "../services/auth/middleware/withUserAuth.js";
 
-const file = Router();
+export const file = Router();
 const upload = multer();
 
 file.use(withUserAuth); //Make routes protected withUserAuth middleware
 
 file.post("/upload", upload.single("file"), uploadFile);
-file.get("/list");
-file.delete("/delete");
-file.get("/:id");
-file.get("/download/:id");
-file.get("/update/:id");
+file.get("/list", listFiles);
+file.delete("/delete", deleteFile);
+file.get("/:id", showFileInfo);
+file.get("/download/:id", download);
+file.get("/update/:id", upload.single("file"), updateFile);

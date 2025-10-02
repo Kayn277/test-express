@@ -8,7 +8,7 @@ import { parsePhoneNumber } from "libphonenumber-js/min";
 import type { RequestWithUser } from "../utils/request-with-user.js";
 import { updateJwtPair } from "../services/auth/jwt.service.js";
 
-const auth = Router();
+export const auth = Router();
 
 auth.post("/signin", bodyZodValidate(signupSchema), expressAsyncHandler(async (req: Request, res: Response) => {
     const { id, password } = req.body;

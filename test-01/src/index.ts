@@ -1,17 +1,25 @@
-import { configDotenv } from "dotenv";
 import express from "express";
 import { env } from "./utils/env-validation.js";
 import { initializeBucket } from "./services/storage/client.js";
 import cookieParser from "cookie-parser";
+import cors from 'cors';
+import { api } from "./routes/index.js";
 
-const app = express();
 
-app.use(cookieParser());
-app.use(express.json());
-
-app.listen(env.PORT, async () => {
-  console.log("Listen on port", env.PORT);
-
-  //Check storage bucket exists
+async function main() {
   await initializeBucket();
-});
+
+  const app = express();
+
+  app.use(cookieParser());
+  app.use(express.json());
+  app.options('*', cors())
+
+  app.use("/api", api);
+
+  app.listen(env.PORT, async () => {
+    console.log("Listen on port", env.PORT);
+  });
+}
+
+main();
