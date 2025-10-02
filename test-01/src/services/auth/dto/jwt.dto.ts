@@ -5,5 +5,6 @@ export interface JwtPair {
 
 export interface JwtPairCreateData {
   userId: string;
-  sessionId: string;
+  userAgent: string;
+  ip: string;
 }
