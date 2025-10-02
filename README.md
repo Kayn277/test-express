@@ -1,7 +1,7 @@
 ## Quick Start
 
 ```
-git clone
+git clone https://github.com/Kayn277/test-express.git
 docker compose up -d
 ```
 
