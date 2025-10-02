@@ -46,7 +46,7 @@ model Session {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   device       String
-  refreshToken String
+  refreshToken String   @db.LongText()
   ip           String
   userId       String
   user         User     @relation(fields: [userId], references: [id])

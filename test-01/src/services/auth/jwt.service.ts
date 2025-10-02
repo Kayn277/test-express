@@ -43,6 +43,23 @@ export async function createJwtPair(
     data: JwtPairCreateData
 ): Promise<JwtPair> {
     return prisma.$transaction(async (tx) => {
+
+        const findedSession = await tx.session.findFirst({
+            where: {
+                userId: data.userId,
+                ip: data.ip,
+                device: data.userAgent
+            },
+        });
+
+        if (findedSession) {
+            tx.session.delete({
+                where: {
+                    id: findedSession.id
+                }
+            })
+        }
+
         const createdSession = await tx.session.create({
             data: {
                 userId: data.userId,
