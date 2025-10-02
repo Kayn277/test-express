@@ -10,7 +10,7 @@ file.use(withUserAuth); //Make routes protected withUserAuth middleware
 
 file.post("/upload", upload.single("file"), uploadFile);
 file.get("/list", listFiles);
-file.delete("/delete", deleteFile);
+file.delete("/delete/:id", deleteFile);
 file.get("/:id", showFileInfo);
 file.get("/download/:id", download);
-file.get("/update/:id", upload.single("file"), updateFile);
+file.put("/update/:id", upload.single("file"), updateFile);
