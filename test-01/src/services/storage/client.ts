@@ -29,7 +29,7 @@ export async function createFile(userId: string, file: FileDTO) {
         extension: fileExtension ?? "",
         mime: file.mimetype,
         name: fileName,
-        size: file.buffer.byteLength,
+        size: BigInt(file.buffer.byteLength),
         userId,
       },
     });
@@ -88,7 +88,7 @@ export async function putFile(
         extension: fileExtension ?? "",
         name: fileName ?? exists.name,
         mime: file.mimetype ?? exists.mime,
-        size: file.buffer.byteLength ?? exists.size,
+        size: BigInt(file.buffer.byteLength) ?? exists.size,
       },
     });
 

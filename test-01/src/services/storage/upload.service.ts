@@ -8,7 +8,6 @@ export async function uploadFile(req: RequestWithUser, res: Response) {
     if (req.file && req.user) {
         res.json(await createFile(req.user.id, req.file));
     }
-
     res.sendStatus(400);
 }
 
