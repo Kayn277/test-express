@@ -57,10 +57,11 @@ export async function download(req: RequestWithUser, res: Response) {
             res.sendStatus(404);
             return;
         }
-
+        res
+            .setHeader('Content-Type', file.mime)
+            .setHeader('Content-Disposition', `attachment; filename="${file.name + '.' + file.extension}"`);
         const fileStream = await getFile(req.user.id, file!.id);
-        res.setHeader('Content-Type', file.mime);
-        res.setHeader('Content-Disposition', `attachment; filename="${file.name + '.' + file.extension}"`);
+
         fileStream.pipe(res);
     }
     else {
