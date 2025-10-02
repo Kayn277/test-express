@@ -58,13 +58,14 @@ export async function download(req: RequestWithUser, res: Response) {
             return;
         }
 
-        const fileBuffer = await getFile(req.user.id, file!.id);
+        const fileStream = await getFile(req.user.id, file!.id);
         res.setHeader('Content-Type', file.mime);
         res.setHeader('Content-Disposition', `attachment; filename="${file.name + '.' + file.extension}"`);
-        fileBuffer.pipe(res);
+        fileStream.pipe(res);
     }
-
-    res.sendStatus(400);
+    else {
+        res.sendStatus(400);
+    }
 }
 
 export async function updateFile(req: RequestWithUser, res: Response) {
