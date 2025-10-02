@@ -49,7 +49,7 @@ auth.post("/signin", bodyZodValidate(signinSchema), expressAsyncHandler(async (r
 auth.post("/signin/new_token", expressAsyncHandler(async (req: Request, res: Response) => {
     if (req.cookies.refreshToken) {
         const jwtPair = await updateJwtPair(req.cookies.refreshToken);
-        res.status(200).json(jwtPair);
+        res.status(200).cookie("refreshToken", jwtPair.refreshToken, { httpOnly: true }).json({ accessToken: jwtPair.accessToken });
     }
     else {
         res.sendStatus(401);

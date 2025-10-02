@@ -73,7 +73,7 @@ export async function createJwtPair(
             userId: data.userId
         }
         const accessToken: string = jwt.sign(payload, env.JWT_PRIVATE_KEY);
-        const refreshToken: string = jwt.sign(payload, env.JWT_PRIVATE_KEY);
+        const refreshToken: string = jwt.sign({ ...payload, timestamp: Date.now() }, env.JWT_PRIVATE_KEY);
 
         await tx.session.update({
             where: {
