@@ -15,12 +15,11 @@ export async function uploadFile(req: RequestWithUser, res: Response) {
 
 export async function listFiles(req: RequestWithUser, res: Response) {
     if (req.user) {
-        let { list_size, page } = paginationSchema.parse({
-            list_size: +req.query.list_size!,
-            page: +req.query.page!,
-        });
-        list_size = list_size ? list_size : 10;
-        page = page ? page : 1;
+        let { list_size, page } = req.query;
+
+        let take = list_size ? parseInt(list_size as string, 10) : 10;
+        let skip = page ? parseInt(page as string, 10) : 1;
+
         const filesCount = await prisma.file.count({
             where: {
                 userId: req.user.id,
@@ -30,15 +29,15 @@ export async function listFiles(req: RequestWithUser, res: Response) {
             where: {
                 userId: req.user.id,
             },
-            skip: (page - 1) * list_size,
-            take: list_size,
+            skip: (skip - 1) * take,
+            take: take,
         })
 
         res.send(JSON.stringify({
             files,
             total: filesCount,
             page: page,
-            pages: Math.ceil(filesCount / list_size)
+            pages: Math.ceil(filesCount / take)
         }, (_, v) => typeof v === 'bigint' ? v.toString() : v))
     }
 
