@@ -4,6 +4,8 @@ import type { RequestWithUser } from "../utils/request-with-user.js";
 
 export const user = Router();
 
-user.post("/info", withUserAuth, (req: RequestWithUser, res) => {
-    return res.json(req.user!.id);
+user.get("/info", withUserAuth, (req: RequestWithUser, res) => {
+    return res.json({
+        id: req.user?.id,
+    });
 });
