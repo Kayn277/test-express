@@ -43,7 +43,7 @@ auth.post("/signin", bodyZodValidate(signinSchema), expressAsyncHandler(async (r
         .status(200)
         .cookie("refreshToken", refreshToken, {
             httpOnly: true
-        }).json(accessToken);
+        }).json({ accessToken: accessToken });
 }));
 
 auth.post("/signin/new_token", expressAsyncHandler(async (req: Request, res: Response) => {
@@ -60,7 +60,7 @@ auth.post("/signup", bodyZodValidate(signupSchema),
     expressAsyncHandler(async (req: Request, res: Response) => {
         const { email, phoneNumber, password } = req.body;
         const responseData = await signup({ email, phoneNumber, password });
-        res.status(201).json(responseData);
+        res.status(201).json({ response: responseData });
     })
 );
 

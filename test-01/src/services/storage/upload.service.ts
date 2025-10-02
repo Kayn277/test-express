@@ -6,7 +6,9 @@ import { paginationSchema } from "./dto/file.dto.js";
 
 export async function uploadFile(req: RequestWithUser, res: Response) {
     if (req.file && req.user) {
-        res.json(await createFile(req.user.id, req.file));
+        const file = await createFile(req.user.id, req.file);
+        size: file.size.toString(),
+            res.send(JSON.stringify(file, (_, v) => typeof v === 'bigint' ? v.toString() : v));
     }
     res.sendStatus(400);
 }
@@ -29,12 +31,12 @@ export async function listFiles(req: RequestWithUser, res: Response) {
             take: page,
         })
 
-        res.json({
+        res.send(JSON.stringify({
             files,
             total: filesCount,
             page: page,
             pages: Math.ceil(filesCount / list_size)
-        })
+        }, (_, v) => typeof v === 'bigint' ? v.toString() : v))
     }
 
     res.sendStatus(400);
@@ -59,7 +61,7 @@ export async function updateFile(req: RequestWithUser, res: Response) {
 
         if (req.file) {
             const updated = await putFile(req.user.id, req.params.id, req.file);
-            res.json(updated);
+            res.send(JSON.stringify(updated, (_, v) => typeof v === 'bigint' ? v.toString() : v));
         }
     }
 
@@ -88,7 +90,7 @@ export async function showFileInfo(req: RequestWithUser, res: Response) {
                 userId: req.user.id,
             },
         });
-        res.json(file);
+        res.send(JSON.stringify(file, (_, v) => typeof v === 'bigint' ? v.toString() : v));
     }
 
     res.sendStatus(400);
